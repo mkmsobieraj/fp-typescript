@@ -1,0 +1,35 @@
+{
+  "name": "fp-typescript",
+  "version": "0.0.1",
+  "description": "Introduction to functional programming in typescript",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test",
+    "lint": "eslint ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mkmsobieraj/fp-typescript.git"
+  },
+  "keywords": [
+    "typescript",
+    "functional",
+    "fp"
+  ],
+  "author": "mateusz.sobieraj",
+  "license": "Apache License 2.0",
+  "bugs": {
+    "url": "https://github.com/mkmsobieraj/fp-typescript/issues"
+  },
+  "homepage": "https://github.com/mkmsobieraj/fp-typescript#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.35.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^4.9.5"
+  }
+}
