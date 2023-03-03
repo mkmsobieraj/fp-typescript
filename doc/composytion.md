@@ -53,7 +53,7 @@ Almost but not realy, we use DI tools to inject AwesomeClass for us. Why do we d
   const method2: (arg1: Arg3) => number = 
     (arg1: Arg3) => arg3.getSth() + new Service().findSthElse()
 
- // or
+// or
 
   const method1: (arg1: Arg1, arg2: Arg2) => number = (arg1: Arg1, arg2: Arg2) => {
       const findSth: (arg2: Arg2) => number = (arg2: Arg2) => {/*implementation*/}
@@ -71,9 +71,57 @@ Almost but not realy, we use DI tools to inject AwesomeClass for us. Why do we d
 ## Better approach
 
 ```ts
+  const method1: (arg1: Arg1, arg2: Arg2, service: Service) => number = 
+    (arg1: Arg1, arg2: Arg2) => arg1.getSth() + service.findSth(arg2)
+
+
+  const method2: (arg1: Arg3, service: Service) => number = 
+    (arg1: Arg3) => arg3.getSth() + service.findSthElse()
+
+// client code
+
+  method1(new Arg1(), new Arg2(), new Service())
+
+
+// or better in FP context becouse for example curring or partial application
+
+
+  const method1: (arg1: Arg1, arg2: Arg2, findSth: FindSth) => number = 
+    (arg1: Arg1, arg2: Arg2) => arg1.getSth() + findSth(arg2)
+
+
+  const method2: (arg1: Arg3, findSthElse: FindSthElse) => number = 
+    (arg1: Arg3) => arg3.getSth() + findSthElse()
+
+// client code
+
+    method1(new Arg1(), new Arg2(), new Service().findSth)
 ```
 
-### Best? approach
+## Best? approach
 
 ```ts
+
+  const method1: (arg1: Arg1, arg2: Arg2) => (service: Service) => number = 
+    (arg1: Arg1, arg2: Arg2) => (
+      (service: Service) => arg1.getSth() + service.findSth(arg2)
+    )
+
+// client code
+
+  // it is still function, and I can define service whenever I want
+  const method1Value: (service: Service) => number = method1(new Arg1(), new Arg2())
+
+
+// or
+
+  const method1: (arg1: Arg1, arg2: Arg2) => (findSth: FindSth) => number = 
+    (arg1: Arg1, arg2: Arg2) => (
+      (findSth: FindSth) => arg1.getSth() + findSth(arg2)
+    )
+
+// client code
+  const method1Value: (findSth: FindSth) => number = method1(new Arg1(), new Arg2())
+
+
 ```

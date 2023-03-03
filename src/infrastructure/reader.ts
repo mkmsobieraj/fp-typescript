@@ -11,6 +11,7 @@ export interface Reader<From, To> {
   map: <NewTo> (mapper: (a: To) => NewTo) => Reader<From, NewTo>
   flatMap: <NewTo> (mapper: (a: To) => Reader<From, NewTo>) => Reader<From, NewTo>
   unit: (a: To) => Reader<From, To>
+  also: (runner: (a: To) => void) => Reader<From, To> // it is not part of monad definition, added for cnovinince
 }
 
 export class ReaderImpl<From, To> implements Reader<From, To> {
@@ -30,4 +31,11 @@ export class ReaderImpl<From, To> implements Reader<From, To> {
     new ReaderImpl<From, NewTo>((from: From) => mapper(this.fn(from)).invoke(from))
 
   unit: (a: To) => ReaderImpl<From, To> = (a: To) => new ReaderImpl<From, To>(() => a)
+
+  also: (runner: (a: To) => void) => Reader<From, To> =
+    (runner: (a: To) => void) => new ReaderImpl<From, To>((from: From) => {
+      const to: To = this.fn(from)
+      runner(to)
+      return to
+    })
 }
